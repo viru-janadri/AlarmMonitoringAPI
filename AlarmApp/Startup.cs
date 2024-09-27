@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 public class Startup
 {
 	private const string ALL_ORIGINS_POLICY = "_allOrigins";
-	private static readonly TimeSpan KEEP_ALIVE_INTERVAL = TimeSpan.FromMilliseconds(10000); // 10-second keep-alive
+	private static readonly TimeSpan KEEP_ALIVE_INTERVAL = TimeSpan.FromMilliseconds(10000); // 100-second keep-alive
 
 	public IConfiguration Configuration { get; }
 
@@ -58,7 +58,7 @@ public class Startup
 
 		services.AddSingleton<AlarmSubscriptions>();
 
-		// Set up the GraphQL server with subscriptions
+		// Set up the GraphQL server with subscriptions and queries
 		services.AddGraphQLServer()
 			.AddType<Alarm>()
 			.AddQueryType<Query>()

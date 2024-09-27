@@ -32,7 +32,7 @@ public class AlarmRepository
 				Console.WriteLine($"Fetched {alarms.Count()} alarms from database.");
 
 
-				// Map the database model to your Alarm model
+				// Map the database model to Alarm model
 				var alarmList = new List<Alarm>();
 
 				foreach (var dbAlarm in alarms)
