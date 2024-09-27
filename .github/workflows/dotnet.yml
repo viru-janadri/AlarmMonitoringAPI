@@ -5,9 +5,9 @@ name: .NET
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "viru-local" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "viru-local" ]
 
 jobs:
   build:
