@@ -11,6 +11,20 @@ public class AlarmRepository
 		_connectionString = connectionString;
 	}
 
+	private string getKind(string label)
+	{
+		string[] yellowLabels = { "pO2   Low Perf", "SpO2   Low Perf", "??SpO2   86   <88", "Airway pressure negative" };
+		string[] redLabels = { "*** Desat", "*** Apnea", "*** Bradypnea", "!!!SpO2 No Pulse", "Air in Fluid Line - Single Air Bubble" };
+		string[] cyanLabels = { "Battery operation", "Neonatal Flow Sensor not at Y - piece", "Problems with Fan", "High O2 Supply Presssure" };
+		if (redLabels.Contains(label))
+			return "Hi";
+
+		if (yellowLabels.Contains(label))
+			return "Me";
+
+		return "Lo";
+	}
+
 	public async Task<IEnumerable<Alarm>> GetActiveAlarmsAsync()
 	{
 		Console.WriteLine("Fetching alarms from database...");
@@ -25,7 +39,8 @@ public class AlarmRepository
 				string sqlquery = @"
 				select id as id, patient_id as patient_id, label as label,
 				announce_start_time as announce_start_time,
-				is_acknowledged from physio.alert_state limit 10;";
+				is_acknowledged from physio.alert_state where label!='';";
+
 
 				var alarms = await db.QueryAsync<AlarmDbModel>(sqlquery);
 
@@ -41,14 +56,15 @@ public class AlarmRepository
 					{
 						Id = dbAlarm.id.ToString(),
 						PatientId = dbAlarm.patient_id.ToString(),
-						AlarmText = "MockLabel",
+						//AlarmText = "MockLabel",
+						AlarmText = dbAlarm.label,
 						Time = dbAlarm.announce_start_time ?? DateTime.UtcNow,
 						IsAcknowledged = dbAlarm.is_acknowledged ?? false,
 						// Hardcoded values
 						Bed = "Bed A",  // Hardcode bed info
 						Color = "Red",  // Hardcode color
 						Kind = "Physiological", // Hardcode alarm kind
-						Priority = "High"  // Hardcode priority
+						Priority = getKind(dbAlarm.label)
 					};
 					alarmList.Add(alarm);
 				}
