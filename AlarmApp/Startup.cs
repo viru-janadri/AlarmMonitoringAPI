@@ -43,7 +43,7 @@ public class Startup
 
 		// Add your connection string
 		//var connectionString = "Host=ae11b406836524e51a65db98d46c52f8-557629353.us-east-1.elb.amazonaws.com;Port=5433;Username=yugabyte;Database=yugabyte;";
-		var connectionString = "Host=ae11b406836524e51a65db98d46c52f8-557629353.us-east-1.elb.amazonaws.com;Port=5433;Username=yugabyte;Database=yugabyte;";
+		var connectionString = "Host=localhost;Port=5433;Username=yugabyte;Database=yugabyte;";
 
 		// Register necessary services
 		services.AddSingleton(new AlarmRepository(connectionString));
